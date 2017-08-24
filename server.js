@@ -11,7 +11,6 @@ app.use(express.static(__dirname + '/public'));
 const routes = require('./routes/index');
 const api = require('./routes/api');
 
-
 app.use('/', routes);
 app.use('/api', api);
 
