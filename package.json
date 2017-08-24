@@ -1,0 +1,11 @@
+{
+  "name": "LogDNA",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.15.4",
+    "fs": "0.0.2",
+    "http": "0.0.0",
+    "path": "^0.12.7",
+    "sequelize": "^4.5.0"
+  }
+}
