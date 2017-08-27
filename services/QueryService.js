@@ -84,9 +84,9 @@ module.exports = () => {
     var command;
     for (var i=0; i<commandsArray.length; i++) {
       command = commandsArray[i];
-      // if (commandsArray[i].value.constructor === Array) {
-      //   command.value=formatCommandsToJSON(commandsArray[i]);
-      // }
+      if (commandsArray[i].value.constructor === Array) {
+        command.value = formatCommandsToJSON(commandsArray[i].value);
+      }
 
       if (command.operation === "AND") {
         result["$and"].push(commandToJSON(command.value));
@@ -96,30 +96,78 @@ module.exports = () => {
         result["$or"].push(commandToJSON(command.value));
       }
     }
+
+    // remove unnecessary ORs
+    if (result["$or"].length === 0)
+      delete result["$or"];
+
+    // remove unnecessary ANDs
+    if (result["$and"].length === 0)
+      delete result["$and"];
+
+    // if there was only 1 command
+    if (commandsArray.length === 1) {
+      result = result["$and"][0];
+    }
     return result;
   }
+
+  function extractTextBetween(textToSearch, startChar, endChar) {
+    var startIndex = null;
+    var startCount = 0, endCount = 0;
+    for (var i = 0; i < textToSearch.length; i++) {
+      if (textToSearch[i] == startChar) {
+        if (!startIndex)
+          startIndex = i;
+        startCount++;
+      }
+      else if (textToSearch[i] == endChar)
+        endCount++;
+
+      if (startCount === endCount) {
+        return textToSearch.substring(startIndex+1, i);
+      }
+    }
+    return "";
+  }
+  // check if alphanumberic for quote
 
   function formatQueryToCommands(queryString) {
     var remaining = queryString;
     var splitString, command, nextOperation = "AND";
     var commandsArray = [];
+    var temp, commandLength;
 
     // while there's more commands in string
     while (remaining.length > 0) {
-      // TODO if starts with (, do a recursive call
-      // if (_.startsWith(remaining, "(")) {
-      //   formatQueryToCommands(remaining.substring())
-      // }
-      // TODO: if there's quotes in the command, grab remaining quoted part of string
-
       // parse next command
       command = remaining.split(" ", 1)[0];
-      remaining = remaining.substring(command.length + 1);
+
+      if (_.startsWith(command, "(")) {
+        // get closing ) position that's not len()'s or nested ()'s
+        temp = extractTextBetween(remaining, '(', ')');
+        command = formatQueryToCommands(temp);
+        // remove front and back brackets so that it doesn't infinitely loop
+        commandLength = temp.length + 2;
+      }
+      // if there's quotes in the command, grab remaining quoted part of string
+      else if (command.indexOf('"') !== -1) {
+        temp = remaining.split('"', 2);
+        // ASSUMPTION command quotes always come in pairs and the second quote is proceeded by a space
+        command = temp[0] + '"' + temp[1] + '"';
+        commandLength = command.length;
+      }
+      else {
+        commandLength = command.length;
+      }
+
+      remaining = remaining.substring(commandLength + 1);
 
       // if command is an AND or OR, update the last command with it
       if (command === "AND")
         continue;
       if (command === "OR") {
+        commandsArray[commandsArray.length - 1].operation = "OR"
         nextOperation = "OR";
         continue;
       }
@@ -136,11 +184,7 @@ module.exports = () => {
 
   function format(queryString) {
     var commandsArray = formatQueryToCommands(queryString);
-    // console.log("commandsArray: ")
-    // console.log(commandsArray)
     var result = formatCommandsToJSON(commandsArray);
-    // console.log("commandsArray: ")
-    // console.log(result)
     return result;
   }
   return {

@@ -1,0 +1,29 @@
+{
+  "testName": "wrong order OR attribute in JSON response",
+  "command": "<400 OR (<800 AND >700) OR (>500 <600)",
+  "jsonValue":
+  {
+    "$or": [
+    {
+      "$lt": "400"
+    },
+    {
+      "$and": [
+      {
+        "$gt": "500"
+      },
+      {
+        "$lt": "600"
+      }]
+    },
+    {
+      "$and": [
+      {
+        "$lt": "800"
+      },
+      {
+        "$gt": "700"
+      }]
+    }]
+  }
+}

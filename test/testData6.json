@@ -1,0 +1,20 @@
+{
+  "testName": "single nested command",
+  "command": "<400 OR (>500 <600)",
+  "jsonValue":
+  {
+    "$or": [
+    {
+      "$lt": "400"
+    },
+    {
+      "$and": [
+      {
+        "$gt": "500"
+      },
+      {
+        "$lt": "600"
+      }]
+    }]
+  }
+}

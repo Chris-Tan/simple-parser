@@ -1,0 +1,8 @@
+{
+  "testName": "single command, boolean test",
+  "command": "!false",
+  "jsonValue":
+  {
+    "$not": false
+  }
+}

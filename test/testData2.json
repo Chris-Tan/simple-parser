@@ -1,0 +1,14 @@
+{
+  "testName": "implicit AND test",
+  "command": ">400 <500",
+  "jsonValue":
+  {
+    "$and": [
+    {
+      "$gt": "400"
+    },
+    {
+      "$lt": "500"
+    }]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "testName": "explicit OR test",
+  "command": "error OR info",
+  "jsonValue":
+  {
+    "$or": ["error", "info"]
+  }
+}

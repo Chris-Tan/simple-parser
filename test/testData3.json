@@ -1,0 +1,20 @@
+{
+  "testName": "quoted string and len value test",
+  "command": "=\"TEST DATA\" OR >len(9)",
+  "jsonValue":
+  {
+    "$or": [
+    {
+      "$eq":
+      {
+        "$quoted": "TEST DATA"
+      }
+    },
+    {
+      "$gt":
+      {
+        "$len": 9
+      }
+    }]
+  }
+}

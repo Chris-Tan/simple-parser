@@ -1,0 +1,8 @@
+{
+  "testName": "equals test",
+  "command": "=TEST",
+  "jsonValue":
+  {
+    "$eq": "TEST"
+  }
+}
