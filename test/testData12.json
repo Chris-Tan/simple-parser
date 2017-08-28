@@ -1,0 +1,26 @@
+{
+  "testName": "nested commands different depth",
+  "command": "<400 OR (<800 AND (>500 OR len(4)))",
+  "jsonValue":
+  {
+    "$or": [
+    {
+      "$lt": "400"
+    },
+    {
+      "$and": [
+      {
+        "$lt": "800"
+      },
+      {
+        "$or": [
+        {
+          "$gt": "500"
+        },
+        {
+          "$len": 4
+        }]
+      }]
+    }]
+  }
+}

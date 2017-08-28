@@ -1,19 +1,6 @@
 'use strict';
 const _ = require('lodash');
 
-// - terms are implicitly AND'd together unless quoted
-// - terms are implicitly an exact match
-// - multiple search terms can be nested using ()'s
-// - negation can be done using ! in front of search term
-// - OR'ing search terms can be done by explicitly using "OR" keyword
-// - AND'ing search terms can optionally be done by explicitly using "AND" keyword
-// - using '>', '>=', '<', '=<' denotes a non exact match on the term following respective symbol
-// - using '=' denotes an exact match on the term following respective symbol
-// - len(#) will allow us to match length of JSON data instead of actual value
-// - 'true', 'false' will be matched to their boolean values instead of string values
-
-
-
 module.exports = () => {
   function parseValue(value) {
     if (value === "false") {
@@ -116,12 +103,12 @@ module.exports = () => {
     var startIndex = null;
     var startCount = 0, endCount = 0;
     for (var i = 0; i < textToSearch.length; i++) {
-      if (textToSearch[i] == startChar) {
-        if (!startIndex)
+      if (textToSearch.charAt(i) === startChar) {
+        if (startIndex === null)
           startIndex = i;
         startCount++;
       }
-      else if (textToSearch[i] == endChar)
+      else if (textToSearch.charAt(i) === endChar)
         endCount++;
 
       if (startCount === endCount) {
@@ -130,7 +117,6 @@ module.exports = () => {
     }
     return "";
   }
-  // check if alphanumberic for quote
 
   function formatQueryToCommands(queryString) {
     var remaining = queryString;

@@ -1,0 +1,35 @@
+{
+  "testName": "multiple nested commands",
+  "command": "<400 OR (<800 AND >700 AND (!len(4) OR len(5) OR >=750))",
+  "jsonValue":
+  {
+    "$or": [
+    {
+      "$lt": "400"
+    },
+    {
+      "$and": [
+      {
+        "$lt": "800"
+      },
+      {
+        "$gt": "700"
+      },
+      {
+        "$or": [
+        {
+          "$not":
+          {
+            "$len": 4
+          }
+        },
+        {
+          "$len": 5
+        },
+        {
+          "$gte": "750"
+        }]
+      }]
+    }]
+  }
+}
