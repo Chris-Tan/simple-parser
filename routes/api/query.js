@@ -8,7 +8,7 @@ const addRoutes = function(router) {
   });
 
   // TODO clean up tests or move to a proper testing framework
-  router.get('/query/test', function(req, res) {
+  router.get('/query/format/test', function(req, res) {
     var result = {};
 
     // importing Test Data
@@ -37,7 +37,7 @@ const addRoutes = function(router) {
     result.j = _.isEqual(QueryService.format(testData10.command), testData10.jsonValue);
     result.k = _.isEqual(QueryService.format(testData11.command), testData11.jsonValue);
     result.l = _.isEqual(QueryService.format(testData12.command), testData12.jsonValue);
-    
+
     return res.json(result);
   });
 };

@@ -5,18 +5,16 @@ module.exports = () => {
   function parseValue(value) {
     if (value === "false") {
       value = false;
-    }
-    else if (value === "true") {
+    } else if (value === "true") {
       value = true;
-    }
-    else if (_.startsWith(value, "len(")) {
-      value = {"$len": parseInt(value.substring(4, value.length - 1))};
-    }
-    else if (_.startsWith(value, '"') && _.endsWith(value, '"')) {
-      value = {"$quoted": value.substring(1, value.length - 1)};
+    } else if (_.startsWith(value, "len(")) {
+      value = { "$len": parseInt(value.substring(4, value.length - 1)) };
+    } else if (_.startsWith(value, '"') && _.endsWith(value, '"')) {
+      value = { "$quoted": value.substring(1, value.length - 1) };
     }
     return value;
   }
+
   function commandToJSON(command) {
     var result = {};
     var isNegation = false;
@@ -32,20 +30,16 @@ module.exports = () => {
     if (_.startsWith(command, ">=")) {
       type = "$gte";
       value = command.substring(2);
-    }
-    else if (_.startsWith(command, ">")) {
+    } else if (_.startsWith(command, ">")) {
       type = "$gt";
       value = command.substring(1);
-    }
-    else if (_.startsWith(command, "<=")) {
+    } else if (_.startsWith(command, "<=")) {
       type = "$lte";
       value = command.substring(2);
-    }
-    else if (_.startsWith(command, "<")) {
+    } else if (_.startsWith(command, "<")) {
       type = "$lt";
       value = command.substring(1);
-    }
-    else if (_.startsWith(command, "=")) {
+    } else if (_.startsWith(command, "=")) {
       type = "$eq";
       value = command.substring(1);
     }
@@ -63,13 +57,14 @@ module.exports = () => {
 
     return result;
   }
+
   function formatCommandsToJSON(commandsArray) {
     var result = {
       "$and": [],
       "$or": []
     };
     var command;
-    for (var i=0; i<commandsArray.length; i++) {
+    for (var i = 0; i < commandsArray.length; i++) {
       command = commandsArray[i];
       if (commandsArray[i].value.constructor === Array) {
         command.value = formatCommandsToJSON(commandsArray[i].value);
@@ -101,18 +96,18 @@ module.exports = () => {
 
   function extractTextBetween(textToSearch, startChar, endChar) {
     var startIndex = null;
-    var startCount = 0, endCount = 0;
+    var startCount = 0,
+      endCount = 0;
     for (var i = 0; i < textToSearch.length; i++) {
       if (textToSearch.charAt(i) === startChar) {
         if (startIndex === null)
           startIndex = i;
         startCount++;
-      }
-      else if (textToSearch.charAt(i) === endChar)
+      } else if (textToSearch.charAt(i) === endChar)
         endCount++;
 
       if (startCount === endCount) {
-        return textToSearch.substring(startIndex+1, i);
+        return textToSearch.substring(startIndex + 1, i);
       }
     }
     return "";
@@ -142,8 +137,7 @@ module.exports = () => {
         // ASSUMPTION command quotes always come in pairs and the second quote is proceeded by a space
         command = temp[0] + '"' + temp[1] + '"';
         commandLength = command.length;
-      }
-      else {
+      } else {
         commandLength = command.length;
       }
 

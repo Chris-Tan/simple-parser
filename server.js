@@ -17,8 +17,7 @@ app.use('/api', api);
 server.listen(app.get('port'), function(err) {
   if (err) {
     console.error("Something went wrong! Error: " + err.message);
-  }
-  else {
+  } else {
     console.info('Express server listening on port ' + server.address().port);
   }
 });
